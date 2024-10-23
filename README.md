@@ -53,6 +53,11 @@ This project is a demonstration of Apache Airflow for orchestrating and scheduli
 
 3. Access the Airflow UI in your browser: http://localhost:8080
 
+4. The DAG [`TemperatureMetrics`](weather_metrics/dags/dag_temperature_metrics.py) uses a PostgreSQL table that needs to be created with the following command:
+   ```sh
+   docker exec -it airflow-demo-postgres-1 psql -U airflow -c "CREATE TABLE temperature (date TEXT, id INTEGER, min DOUBLE PRECISION, max DOUBLE PRECISION);"
+   ```
+
 ### Shutting Down the Environment
 
 To shut down the Airflow services:
