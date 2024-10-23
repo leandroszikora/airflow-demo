@@ -1,9 +1,10 @@
 """
 Functions used for manage open meteo data about temperature
 """
-import requests
 
 from typing import Dict, Any
+
+import requests
 
 url: str = "https://api.open-meteo.com/v1/forecast"
 
@@ -17,7 +18,9 @@ INSERT INTO temperature (date, id, min, max) VALUES (
 """
 
 
-def get_temperature_data_open_meteo(ds: str, base_url: str, lon: float, lat: float, city_id: str) -> Dict[str, Any]:
+def get_temperature_data_open_meteo(
+    ds: str, base_url: str, lon: float, lat: float, city_id: str
+) -> Dict[str, Any]:
     """
     Makes an HTTP GET action to retrieve the data of the city temperature
     :param ds: date of the temperature to retrieve
@@ -28,21 +31,23 @@ def get_temperature_data_open_meteo(ds: str, base_url: str, lon: float, lat: flo
     :return: dict with temperature data
     """
     params: Dict[str, Any] = {
-        'latitude': lat,
-        'longitude': lon,
-        'daily': 'temperature_2m_max,temperature_2m_min',
-        'timezone': 'UTC',
-        'past_days': 2
+        "latitude": lat,
+        "longitude": lon,
+        "daily": "temperature_2m_max,temperature_2m_min",
+        "timezone": "UTC",
+        "past_days": 2,
     }
-    response: requests.Response = requests.get(base_url, params='&'.join("%s=%s" % (k, v) for k, v in params.items()))
+    response: requests.Response = requests.get(
+        base_url, params="&".join("%s=%s" % (k, v) for k, v in params.items())
+    )
     response: Dict[str, Any] = response.json()
-    index: int = response['daily']['time'].index(ds)
+    index: int = response["daily"]["time"].index(ds)
 
     return {
-        'time': ds,
-        'id': city_id,
-        'min': response['daily']['temperature_2m_min'][index],
-        'max': response['daily']['temperature_2m_max'][index]
+        "time": ds,
+        "id": city_id,
+        "min": response["daily"]["temperature_2m_min"][index],
+        "max": response["daily"]["temperature_2m_max"][index],
     }
 
 
